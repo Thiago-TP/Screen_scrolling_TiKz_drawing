@@ -1,0 +1,35 @@
+% !TEX program = lualatex
+\documentclass[border=2mm]{standalone}
+
+\input{setup.tex}
+
+\begin{document}
+	
+	\begin{tikzpicture}[scale = \scale]
+			
+		\tilemap	{line width=1pt, opacity=.75}	{\compl:1*\tileLen};	
+		\window		{line width=2pt, red}			{\angle:.5*\tileLen};
+		
+		\draw[thick, red, opacity=.5]
+			(down left.center)	--++ (\compl:1*\tileLen) node (dl projection) {}
+			(down right.center) --++ (\compl:1*\tileLen) node (dr projection) {}
+			(up right.center) 	--++ (\compl:1*\tileLen) node (ur projection) {} 
+			(up left.center) 	--++ (\compl:1*\tileLen) node (ul projection) {}
+		;
+		
+		\draw[thick, red, opacity=.5]
+			(ul projection.center) -- (dl projection.center) 
+			(ur projection.center) -- (dr projection.center)
+		;	
+		
+		\fill[red, opacity=.25]
+			(up right.center) -- (ur projection.center) -- (ul projection.center) -- 
+			(dl projection.center) -- (down left.center) -- (up left.center) -- cycle;
+		;	
+		
+		\input{../aux/fill_tilemap.tex}	% Tilemap é preenchido
+		\input{../aux/fill_bitmap.tex}	% Bitmap é preenchido	
+		
+	\end{tikzpicture}
+
+\end{document}

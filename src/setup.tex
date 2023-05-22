@@ -1,0 +1,87 @@
+\usepackage{tikz}
+\usepackage{calculator, xcolor}
+
+\def\tileLen		{16}
+\def\tilemapLen		{30*\tileLen}
+\def\tilemapHeight	{15*\tileLen}
+\def\bmpLen			{20*\tileLen}
+
+\def\angle{10}			% Ângulo de inclinação com a horizontal
+\def\compl{180-\angle}	% Ângulo complementar ao de inclinação
+\def\scale{1/\tileLen}	% Correção de escala do desenho
+
+\input{../aux/tilemap_color_bytes.tex}	% Conjunto de bytes de cor da sprite no tilemap
+\input{../aux/bitmap_color_bytes.tex}	% Conjunto de bytes de cor da sprite no tilemap
+
+% Pixel em perspectiva
+% arg1 = byte de cor
+% arg2 = indice de posição
+% arg3 = poto superior esqeerdo do tilemap
+% arg4 = sprite length
+% arg5 = pixel opacity
+\newcommand{\getr}[1]{\DIVIDE{#1}{7}{\r}}
+%
+\newcommand{\getgbits}[1]{\INTEGERDIVISION{#1}{8}{\dummy}{\gbits}}
+\newcommand{\getg}[1]{\DIVIDE{#1}{7}{\g}}
+%
+\newcommand{\getbbits}[1]{\INTEGERDIVISION{#1}{64}{\bbits}{\dummy}}
+\newcommand{\getb}[1]{\DIVIDE{#1}{3}{\b}}
+%
+\newcommand{\getxy}[2]{\INTEGERDIVISION{#1}{#2}{\y}{\x}}
+
+\newcommand{\slantedPixel}[5]{
+	%
+	\INTEGERDIVISION{#1}{64}{\b}{\dummy}
+	\INTEGERDIVISION{#1}{8}{\bg}{\rbits}
+		
+	\getbbits{#1}	\getb{\bbits}
+	\getgbits{\bg}	\getg{\gbits}
+					\getr{\rbits}
+	
+	\definecolor{byte color}{rgb}{\r, \g, \b}
+	 
+	\getxy{#2}{#4}	% 
+	
+	\fill [color=byte color, opacity=#5] 
+		#3 ++ (\angle:\x) ++ (0, -\y) --++ 
+		(\angle:1) --++ (90:-1) --++ (\angle:-1) --++ (90:1)
+	;
+}
+
+% Tela mostrada ao jogador
+\newcommand{\window}[2]{
+	\begin{scope}[shift = {(#2)}]
+		\draw [#1] 
+			(0:0) 				node (down left) {}--++ 
+			(\angle:\bmpLen)	node (down right) {} --++ 
+			(90:\tilemapHeight) node (up right) {} --++ 
+			(\angle:-\bmpLen)	node (up left) {}
+			-- cycle
+		;
+		\foreach \x in {1, 2, ..., 19} {
+			\draw [thin, opacity=.25] (\angle:\x*\tileLen) --++ (90:\tilemapHeight);
+		}
+		\foreach \y in {1, 2, ..., 14} {
+			\draw [thin, opacity=.25] (90:\y*\tileLen) --++ (\angle:\bmpLen);
+		}
+	\end{scope}
+}
+
+% Tilemap inteiro
+\newcommand{\tilemap}[2]{
+	\begin{scope}[shift = {(#2)}]
+		\draw [#1]
+			(0:0) --++ 
+			(\angle:\tilemapLen) --++ 
+			(90:\tilemapHeight) --++ 
+			(\angle:-\tilemapLen) node (tilemapStart) {} -- 
+			cycle
+		;
+		\foreach \x in {1, 2, ..., 29} {
+			\draw [thin, opacity=.1] (\angle:\x*\tileLen) --++ (90:\tilemapHeight);
+		}
+		\foreach \y in {1, 2, ..., 14} {
+			\draw [thin, opacity=.1] (90:\y*\tileLen) --++ (\angle:\tilemapLen);
+		}
+	\end{scope}
+}

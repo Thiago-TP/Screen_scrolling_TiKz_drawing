@@ -1,0 +1,37 @@
+%% goombas e koopas
+\foreach \line in {0, 1, 2, 3} {
+	\foreach \col in {0, 1} {			
+		\foreach [count=\i from 0] \color in \arrayHalfEnemiesOne {
+			\slantedPixel{\color}{\i}{
+				(up left.center) ++ 
+				(0, -4*\tileLen*\line) ++ 
+				(\angle:160*\col)}{160}{1}
+		}
+		\foreach [count=\i from 0] \color in \arrayHalfEnemiesTwo {
+			\slantedPixel{\color}{\i}{
+				(up left.center) ++ (0, -\tileLen) ++
+				(0, -4*\tileLen*\line) ++ 
+				(\angle:160*\col)}{160}{1}
+		}
+	}
+}
+%% Bowsers e lakitus
+\foreach \line in {0, 1, 2} {
+	\foreach \col in {0, 1} {			
+		\foreach [count=\i from 0] \color in \arrayHalfEnemiesThree {
+			\slantedPixel{\color}{\i}{
+				(up left.center) ++ (0, -2*\tileLen) ++
+				(0, -4*\tileLen*\line) ++ 
+				(\angle:160*\col)}{160}{1}
+		}
+	}
+}
+%% tijolos
+\foreach \col in {0, 1, ..., 19} {			
+	\foreach [count=\i from 0] \color in \arrayBrick {
+		\slantedPixel{\color}{\i}{
+			(up left.center) ++
+			(0, -14*\tileLen) ++ 
+			(\angle:\tileLen*\col)}{\tileLen}{1}
+	}
+}

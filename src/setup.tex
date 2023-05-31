@@ -1,5 +1,5 @@
 \usepackage{tikz}
-\usepackage{calculator, xcolor}
+\usepackage{calculator}
 
 \def\tileLen		{16}
 \def\tilemapLen		{30*\tileLen}
@@ -58,12 +58,6 @@
 			(\angle:-\bmpLen)	node (up left) {}
 			-- cycle
 		;
-		\foreach \x in {1, 2, ..., 19} {
-			\draw [thin, opacity=.25] (\angle:\x*\tileLen) --++ (90:\tilemapHeight);
-		}
-		\foreach \y in {1, 2, ..., 14} {
-			\draw [thin, opacity=.25] (90:\y*\tileLen) --++ (\angle:\bmpLen);
-		}
 	\end{scope}
 }
 
@@ -78,10 +72,10 @@
 			cycle
 		;
 		\foreach \x in {1, 2, ..., 29} {
-			\draw [thin, opacity=.1] (\angle:\x*\tileLen) --++ (90:\tilemapHeight);
+			\draw [thin, opacity=.2] (\angle:\x*\tileLen) --++ (90:\tilemapHeight);
 		}
 		\foreach \y in {1, 2, ..., 14} {
-			\draw [thin, opacity=.1] (90:\y*\tileLen) --++ (\angle:\tilemapLen);
+			\draw [thin, opacity=.2] (90:\y*\tileLen) --++ (\angle:\tilemapLen);
 		}
 	\end{scope}
 }

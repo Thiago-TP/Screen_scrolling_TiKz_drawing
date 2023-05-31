@@ -1,6 +1,6 @@
 % !TEX program = lualatex
 \documentclass[border=2mm]{standalone}
-
+	
 \input{setup.tex}
 
 \begin{document}
@@ -21,6 +21,17 @@
 			(ul projection.center) -- (dl projection.center) 
 			(ur projection.center) -- (dr projection.center)
 		;	
+		\begin{scope}[shift = {(\angle:.5*\tileLen)}]
+			\foreach \x in {1, 2, ..., 19} {
+				\draw [red, opacity=.5] 
+				(tilemapStart.center) ++ 
+				(\angle:\x*\tileLen) --++ (\compl:-\tileLen);
+			}
+			\foreach \y in {1, 2, ..., 14} {
+				\draw [red, opacity=.5] 
+				(90:\y*\tileLen) --++ (\compl:\tileLen);
+			}
+		\end{scope}
 		
 		\fill[red, opacity=.25]
 			(up right.center) -- (ur projection.center) -- (ul projection.center) -- 
@@ -29,6 +40,17 @@
 		
 		\input{../aux/fill_tilemap.tex}	% Tilemap é preenchido
 		\input{../aux/fill_bitmap.tex}	% Bitmap é preenchido	
+		
+		\begin{scope}[shift = {(\angle:.5*\tileLen)}]
+			\foreach \x in {.5, 1.5, ..., 19.5} {
+				\draw [thin, opacity=1] (\angle:\x*\tileLen) --++ (90:\tilemapHeight);
+			}
+			\foreach \y in {1, 2, ..., 14} {
+				\draw [thin, opacity=1] 
+					(90:\y*\tileLen) --++ (\angle:\bmpLen)
+				;
+			}
+		\end{scope}
 		
 	\end{tikzpicture}
 
